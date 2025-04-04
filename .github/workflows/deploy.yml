@@ -33,7 +33,7 @@ jobs:
       - name: Set up Kubernetes kubeconfig
         uses: azure/setup-kubectl@v1
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}  # Your Kubeconfig stored in GitHub secrets
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}  # Your Kubeconfig stored in GitHub secretss
 
       - name: Check if deployment exists
         run: |
