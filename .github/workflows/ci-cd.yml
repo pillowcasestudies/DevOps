@@ -23,11 +23,11 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ./backend
-        run: npm install
+        run: npm ci
 
       - name: Run Tests
         working-directory: ./backend
-        run: npm test
+        run: npx jest
 
       - name: Log in to Azure Container Registry (ACR)
         run: az acr login --name cicddemoregistry1991
