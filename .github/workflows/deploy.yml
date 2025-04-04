@@ -22,7 +22,7 @@ jobs:
         run: |
           docker build -t mycontainerregistry.azurecr.io/cicddemoapp1991:v1 .
           echo "${{ secrets.ACR_PASSWORD }}" | docker login mycontainerregistry.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
-          docker push mycontainerregistry.azurecr.io/cicddemoapp1991:v1
+          docker push cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
