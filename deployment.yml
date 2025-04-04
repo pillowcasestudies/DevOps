@@ -17,3 +17,5 @@ spec:
         image: cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1
         ports:
         - containerPort: 80
+
+        
