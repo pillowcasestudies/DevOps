@@ -28,4 +28,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: "CiCdDemoApp1991"
-          images: "mycontainerregistry.azurecr.io/cicddemoapp1991:v1"
+          images: "cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1"
