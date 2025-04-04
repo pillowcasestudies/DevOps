@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1 .
+          docker build -t cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1 ./backend
           echo "${{ secrets.ACR_PASSWORD }}" | docker login cicddemoregistry1991.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
           docker push cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1
 
