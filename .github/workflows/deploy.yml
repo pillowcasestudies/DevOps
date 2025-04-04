@@ -20,8 +20,13 @@ jobs:
 
       - name: Build and push Docker image
         run: |
+          # Build Docker image and tag it with the appropriate repository and tag
           docker build -t cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1 ./backend
+          
+          # Log in to Azure Container Registry (ACR) using secrets
           echo "${{ secrets.ACR_PASSWORD }}" | docker login cicddemoregistry1991.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+          
+          # Push the Docker image to ACR
           docker push cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1
 
       - name: Deploy to Azure Web App
