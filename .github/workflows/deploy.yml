@@ -1,9 +1,9 @@
-name: Deploy to Azure
+name: Deploy to Azure AKS
 
 on:
   push:
     branches:
-      - main  # Change if your main branch has a different names
+      - main  # Change this if your default branch is different
 
 jobs:
   build-and-deploy:
@@ -18,19 +18,26 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Log in to Azure Container Registry (ACR)
+        run: |
+          echo "${{ secrets.ACR_PASSWORD }}" | docker login cicddemoregistry1991.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+
       - name: Build and push Docker image
         run: |
-          # Build Docker image and tag it with the appropriate repository and tag
-          docker build -t cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1 ./backend
-          
-          # Log in to Azure Container Registry (ACR) using secrets
-          echo "${{ secrets.ACR_PASSWORD }}" | docker login cicddemoregistry1991.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
-          
-          # Push the Docker image to ACR
-          docker push cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t cicddemoregistry1991.azurecr.io/cicddemoapp1991:$IMAGE_TAG ./backend
+          docker push cicddemoregistry1991.azurecr.io/cicddemoapp1991:$IMAGE_TAG
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
         with:
-          app-name: "CiCdDemoApp1991"
-          images: "cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1"
+          version: "latest"
+
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials --resource-group MyResourceGroup --name MyUSAKSCluster --overwrite-existing
+
+      - name: Deploy to AKS
+        run: |
+          kubectl set image deployment/cicddemoapp1991 cicddemoapp1991=cicddemoregistry1991.azurecr.io/cicddemoapp1991:${{ github.sha }}
+          kubectl rollout status deployment/cicddemoapp1991
