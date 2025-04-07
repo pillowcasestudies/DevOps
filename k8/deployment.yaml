@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicddemoapp1991
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cicddemoapp1991
+  template:
+    metadata:
+      labels:
+        app: cicddemoapp1991
+    spec:
+      containers:
+      - name: cicddemoapp1991
+        image: cicddemoregistry1991.azurecr.io/cicddemoapp1991:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
