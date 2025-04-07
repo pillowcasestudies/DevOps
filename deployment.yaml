@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: cicddemoapp1991
-        image: cicddemoregistry1991.azurecr.io/cicddemoapp1991:v1
+        image: cicddemoregistry1991.azurecr.io/cicddemoapp1991:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
-
-        
+      restartPolicy: Always
