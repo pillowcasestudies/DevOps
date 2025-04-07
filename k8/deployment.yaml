@@ -17,8 +17,4 @@ spec:
         image: cicddemoregistry1991.azurecr.io/cicddemoapp1991:latest
         imagePullPolicy: Always
         ports:
-        - protocol: TCP
-      port: 80
-      targetPort: 3000
-      type: LoadBalancer 
-      restartPolicy: Always
+        - containerPort: 3000 
