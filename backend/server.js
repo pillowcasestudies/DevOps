@@ -9,13 +9,17 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, "../frontend/public")));
+// Serve static files from the 'frontend/public' directory
+
 // Health check endpoints
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is running" });
 });
 
-app.use(express.static(path.join(__dirname, "../frontend/public")));
-
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'public', 'index.html'));
+});
 // Start the servers
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
