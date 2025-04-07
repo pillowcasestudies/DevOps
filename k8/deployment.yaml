@@ -17,5 +17,5 @@ spec:
         image: cicddemoregistry1991.azurecr.io/cicddemoapp1991:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 3000
       restartPolicy: Always
