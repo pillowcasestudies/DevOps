@@ -18,7 +18,7 @@ COPY ../frontend /app/frontend
 WORKDIR /app/frontend
 RUN npm install && npm run build
 
-# Copy built frontend into backend's public folder
+# Copy built frontend into backend's public folders
 RUN cp -r .next/static /app/public/
 
 # Go back to root app dir to run the server
