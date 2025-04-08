@@ -6,7 +6,9 @@ WORKDIR /app
 
 # Copy backend package files and install dependencies
 COPY package*.json ./
-RUN npm install
+
+RUN npm install && npm run build
+RUN cp -r out/* /app/public/
 
 # Copy the entire backend app (including server.js, public/, etc.)
 COPY . .
