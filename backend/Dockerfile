@@ -13,7 +13,9 @@ COPY . /app/
 
 # Build the frontend React app
 WORKDIR /app/frontend
-RUN npm install && npm run build
+
+# Install dependencies and run the build, while adding more verbose logging
+RUN npm install && npm run build || tail -n 100 /root/.npm/_logs/*-debug.log
 
 # Copy built frontend into public folder
 RUN cp -r /app/frontend/out/* /app/public/
