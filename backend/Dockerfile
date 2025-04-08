@@ -1,20 +1,28 @@
-# Use an official Node.js runtime as a parent image
+# Use official Node.js image
 FROM node:18
 
-# Set the working directory inside the container
+# Create app directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first (for caching)
+# Copy backend package files and install dependencies
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application's code
+# Copy the entire backend app (including server.js, public/, etc.)
 COPY . .
 
-# Expose the ports the app runs on
+# Build the frontend React app
+WORKDIR /app/frontend
+RUN npm install && npm run build
+
+# Copy built frontend into public folder
+RUN cp -r build/* /app/public/
+
+# Go back to root app dir to run the server
+WORKDIR /app
+
+# Expose backend port
 EXPOSE 3000
 
-# Command to run the application
+# Start the server
 CMD ["node", "server.js"]

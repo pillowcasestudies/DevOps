@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+const frontendPath = path.join(__dirname, process.env.NODE_ENV === "production" ? "frontend/public" : "../frontend/public");
 app.use(express.static(path.join(__dirname, "public")));
 
 // Health check endpoints
@@ -17,7 +18,7 @@ app.get("/health", (req, res) => {
 
 // Serve index.html on the root route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 // Start the server
