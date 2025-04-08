@@ -21,7 +21,7 @@ RUN cp -r build/* /app/public/
 # Go back to root app dir to run the server
 WORKDIR /app
 
-# Expose backend port
+# Expose backend ports
 EXPOSE 3000
 
 # Start the server
