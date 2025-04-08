@@ -5,26 +5,24 @@ FROM node:18
 WORKDIR /app
 
 # Copy backend package files and install dependencies
-COPY package*.json ./
-
-RUN npm install && npm run build
-RUN cp -r out/* /app/public/
+COPY backend/package*.json ./backend/
+WORKDIR /app/backend
+RUN npm install
 
 # Copy the entire backend app (including server.js, public/, etc.)
-COPY . .
-
-# Copy frontend files into image (this assumes you have /frontend in your project root)
-COPY ../frontend /app/frontend
+COPY backend /app/backend/
 
 # Build the frontend React app
 WORKDIR /app/frontend
-RUN npm install && npm run build
+COPY frontend/package*.json ./
+RUN npm install
+RUN npm run build && npm run export
 
-# Copy built frontend into backend's public folders
-RUN cp -r .next/static /app/public/
+# Copy built frontend into public folder
+RUN cp -r out/* /app/public/
 
 # Go back to root app dir to run the server
-WORKDIR /app
+WORKDIR /app/backend
 
 # Expose backend ports
 EXPOSE 3000
