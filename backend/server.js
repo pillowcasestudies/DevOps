@@ -11,7 +11,7 @@ app.use(express.json());
 const frontendPath = path.join(__dirname, process.env.NODE_ENV === "production" ? "frontend/public" : "../frontend/public");
 app.use(express.static(frontendPath));
 
-// Health check endpoint
+// Health check endpoints
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is running" });
 });
