@@ -11,12 +11,15 @@ RUN npm install
 # Copy the entire backend app (including server.js, public/, etc.)
 COPY . .
 
+# Copy frontend files into image (this assumes you have /frontend in your project root)
+COPY ../frontend /app/frontend
+
 # Build the frontend React app
 WORKDIR /app/frontend
 RUN npm install && npm run build
 
-# Copy built frontend into public folder
-RUN cp -r build/* /app/public/
+# Copy built frontend into backend's public folder
+RUN cp -r .next/static /app/public/
 
 # Go back to root app dir to run the server
 WORKDIR /app
