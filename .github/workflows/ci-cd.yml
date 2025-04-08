@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,12 +37,19 @@ jobs:
           docker build -t cicddemoregistry1991.azurecr.io/cicddemoapp1991:${{ github.sha }} ./backend
           docker push cicddemoregistry1991.azurecr.io/cicddemoapp1991:${{ github.sha }}
 
-      - name: Log in and Push to Docker Hub (if credentials are set)
-        if: ${{ env.DOCKER_USERNAME != '' && env.DOCKER_PASSWORD != '' }}
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set up Kubernetes context
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster-name: MyUSAKSCluster
+          resource-group: MyUSResourceGroup
+
+      - name: Deploy to AKS
         run: |
-          echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
-          docker tag cicddemoregistry1991.azurecr.io/cicddemoapp1991:${{ github.sha }} pillowcasestudies/backend-app
-          docker push pillowcasestudies/backend-app
+          kubectl set image deployment/cicddemoapp1991 cicddemoapp1991=cicddemoregistry1991.azurecr.io/cicddemoapp1991:${{ github.sha }}
+          kubectl rollout status deployment/cicddemoapp1991
