@@ -17,6 +17,9 @@ WORKDIR /app/frontend
 # Install dependencies and run the build, while adding more verbose logging
 RUN npm install && npm run build
 
+# Create the folder before trying to copy into it
+RUN mkdir -p /app/public
+
 # Copy built frontend into public folder
 RUN cp -r out/* /app/public/
 
