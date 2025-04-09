@@ -18,7 +18,7 @@ WORKDIR /app/frontend
 RUN npm install && npm run build
 
 # Copy built frontend into public folder
-RUN cp -r /app/frontend/out/* /app/public/
+RUN cp -r out/* /app/public/
 
 # Go back to root app dir to run the server
 WORKDIR /app
