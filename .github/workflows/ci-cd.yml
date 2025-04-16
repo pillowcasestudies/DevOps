@@ -20,7 +20,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-
+      - name: Set up MongoDB connection using secret
+        run: |
+          echo "MONGO_URI=mongodb+srv://myuser:${{ secrets.MONGODB_PASSWORD }}@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority" >> .env
+        env:
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       - name: Install Dependencies
         working-directory: ./backend
         run: npm ci
