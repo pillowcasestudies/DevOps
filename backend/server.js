@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static frontend
-const frontendPath = path.join(__dirname, "frontend", "out"); 
+const frontendPath = path.join(__dirname, "frontend", "out");
 app.use(express.static(frontendPath));
 
 // Health check
@@ -44,7 +44,7 @@ app.post("/api/users", async (req, res) => {
 });
 
 // Catch-all route to serve frontend (e.g., React Router)
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
