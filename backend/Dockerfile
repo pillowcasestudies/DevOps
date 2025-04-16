@@ -1,32 +1,28 @@
 # Use official Node.js image
 FROM node:18
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Copy package files and install backend dependencies
+# Install backend dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the entire backend app (including server.js, frontend/, etc.)
-COPY . /app/
+# Copy the entire backend (including frontend)
+COPY . .
 
 # Build the frontend React app
 WORKDIR /app/frontend
-
-# Install dependencies and run the build, while adding more verbose logging
 RUN npm install && npm run build
 
-# Create the folder before trying to copy into it
+# Move the built frontend files to a public folder
 RUN mkdir -p /app/public
-
-# Copy built frontend into public folder
 RUN cp -r out/* /app/public/
 
-# Go back to root app dir to run the server
+# Go back to root directory
 WORKDIR /app
 
-# Expose backend ports
+# Expose backend port
 EXPOSE 3000
 
 # Start the server
